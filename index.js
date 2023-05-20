@@ -25,6 +25,22 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const carCollection = client.db("speedyWheels").collection("cars");
+
+    app.get("/cars/:category", async(req, res) => {
+        if(req.params.category == 'regular' || req.params.category == 'sports' || req.params.category == 'truck') {
+            const result = await carCollection.find({category: req.params.category}).toArray();
+             res.send(result);
+        }
+    })
+
+    app.post("/cars", async(req, res) => {
+        const car = req.body;
+        const result = await carCollection.insertOne(car);
+        res.send(result);
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
