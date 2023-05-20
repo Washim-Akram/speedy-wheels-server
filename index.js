@@ -28,6 +28,11 @@ async function run() {
 
     const carCollection = client.db("speedyWheels").collection("cars");
 
+    app.get("/cars", async(req, res) => {
+        const result = await carCollection.find().limit(20).toArray();
+        res.send(result);
+    });
+
     app.get("/cars/:category", async(req, res) => {
         if(req.params.category == 'regular' || req.params.category == 'sports' || req.params.category == 'truck') {
             const result = await carCollection.find({category: req.params.category}).toArray();
