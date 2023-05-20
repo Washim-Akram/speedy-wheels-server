@@ -45,13 +45,44 @@ async function run() {
             const result = await carCollection.find({category: req.params.category}).toArray();
              res.send(result);
         }
-    })
+    });
+
+    app.get("/my-cars", async(req, res) => {
+      let query = {};
+      if(req.query?.email) {
+        query = {sellerEmail : req.query.email}
+      }
+      const result = await carCollection.find(query).toArray();
+      res.send(result);
+    });
 
     app.post("/cars", async(req, res) => {
         const car = req.body;
         const result = await carCollection.insertOne(car);
         res.send(result);
-    })
+    });
+
+    app.patch('/cars/:id', async(req, res) => {
+      const id = req.params.id;
+      const car = req.body;
+      const filter = { _id: new ObjectId(id)};
+      const updatedCar = {
+        $set: {
+          price: car.price,
+          quantity: car.quantity,
+          description: car.description
+        }
+      }
+      const result = await carCollection.updateOne(filter, updatedCar);
+      res.send(result);
+    });
+
+    app.delete('/cars/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = { _id : new ObjectId(id)};
+      const result = await carCollection.deleteOne(query);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
