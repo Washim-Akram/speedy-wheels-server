@@ -1,8 +1,8 @@
 # Speedy Wheels Server
 
-## Live Link
+## Live Server Link
 
-Hosted in Vercel -> [SpeedyWheelsServer]()
+Hosted in Vercel -> [SpeedyWheelsServer](https://speedy-wheels-server-three.vercel.app/)
 
 ## Server Side Tools & Techniques
 
